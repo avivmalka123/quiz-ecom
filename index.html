@@ -758,32 +758,29 @@ function buildWhatsAppLink() {
   message += 'מחוייבות: ' + (answers['q10'] || '') + '\n';
   document.getElementById('whatsappLink').href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
 
-  // Send to Google Sheets
-  sendToGoogleSheets();
+  // Send email via FormSubmit
+  sendEmail();
 }
 
-function sendToGoogleSheets() {
-  const WEBHOOK_URL = 'GOOGLE_SCRIPT_URL_HERE';
-  if (WEBHOOK_URL === 'GOOGLE_SCRIPT_URL_HERE') return;
-
+function sendEmail() {
   const data = {
-    timestamp: new Date().toLocaleString('he-IL'),
-    name: answers['q1'] || '',
-    phone: answers['q2'] || '',
-    age: answers['q3'] || '',
-    watched_content: answers['q4'] || '',
-    experience: answers['q5'] || '',
-    financial_feeling: answers['q6'] || '',
-    first_step: answers['q7'] || '',
-    whats_missing: answers['q8'] || '',
-    financial_status: answers['q9'] || '',
-    commitment: answers['q10'] || ''
+    _subject: 'ליד חדש מהשאלון! - ' + (answers['q1'] || ''),
+    'שם': answers['q1'] || '',
+    'טלפון': answers['q2'] || '',
+    'גיל': answers['q3'] || '',
+    'צפה בתכנים': answers['q4'] || '',
+    'ניסיון באיקומרס': answers['q5'] || '',
+    'תחושה כלכלית': answers['q6'] || '',
+    'מוכנות לצעד ראשון': answers['q7'] || '',
+    'מה חסר': answers['q8'] || '',
+    'מצב כלכלי': answers['q9'] || '',
+    'מחוייבות': answers['q10'] || '',
+    _template: 'table'
   };
 
-  fetch(WEBHOOK_URL, {
+  fetch('https://formsubmit.co/ajax/aviv1988@gmail.com', {
     method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
     body: JSON.stringify(data)
   }).catch(() => {});
 }
