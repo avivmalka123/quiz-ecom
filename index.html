@@ -760,6 +760,8 @@ function buildWhatsAppLink() {
 
   // Send email via FormSubmit
   sendEmail();
+  // Send to Make.com webhook
+  sendToMake();
 }
 
 function sendEmail() {
@@ -781,6 +783,28 @@ function sendEmail() {
   fetch('https://formsubmit.co/ajax/aviv1988@gmail.com', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(data)
+  }).catch(() => {});
+}
+
+function sendToMake() {
+  const data = {
+    name: answers['q1'] || '',
+    phone: answers['q2'] || '',
+    age: answers['q3'] || '',
+    watched_content: answers['q4'] || '',
+    experience: answers['q5'] || '',
+    financial_feeling: answers['q6'] || '',
+    first_step: answers['q7'] || '',
+    whats_missing: answers['q8'] || '',
+    financial_status: answers['q9'] || '',
+    commitment: answers['q10'] || '',
+    timestamp: new Date().toLocaleString('he-IL')
+  };
+
+  fetch('https://hook.eu2.make.com/k6jjho2j6ourfgan7gbwmnqp8g4x4od1', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   }).catch(() => {});
 }
